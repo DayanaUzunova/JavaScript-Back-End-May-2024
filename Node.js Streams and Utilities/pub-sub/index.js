@@ -1,24 +1,14 @@
-const eventBus = require("./eventBus");
+const { start: startSubscriber1 } = require ('./subscriber1');
+const { start: startSubscriber2, unsub } = require ('./subscriber2');
+const { start: startPublisher } = require ('./publisher');
 
-eventBus.subscribe("kitten-added", () => {
-  console.log("Kitten has been added!");
-});
+function start(){
+    startSubscriber1();
+    startSubscriber2();
+    startPublisher();
 
-const unsubscribe = eventBus.subscribe("kitten-added", (kittenName, age) => {
-  console.log(
-    `Kitten has been added! Second time! Its name is ${kittenName} and is ${age} y/o`
-  );
-});
+    unsub();
+    startPublisher();
+}
 
-eventBus.subscribe("kitten-removed", () => {
-  console.log("Kitten has been removed!");
-});
-
-eventBus.publish("kitten-added", "Puffy", 8);
-eventBus.publish("kitten-removed");
-
-unsubscribe();
-
-console.log("---------------------");
-eventBus.publish("kitten-added", "Puffy", 8);
-eventBus.publish("kitten-removed");
+start();
