@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const { catalogRouter } = require('./catalog');
 const { countMiddleware } = require('./middlewares/counter');
@@ -6,9 +7,20 @@ const { dataController } = require('./data');
 const app = express();
 
 const homeHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
     <h1>Home Page</h1>
     <a href="/">Home</a>
     <a href="/catalog">Catalog</a>
+    </body>
+</html>
 `;
 
 const catalogHtml = `
@@ -16,6 +28,9 @@ const catalogHtml = `
     <a href="/">Home</a>
     <a href="/catalog">Catalog</a>
 `;
+
+app.use('/static', express.static('static'));
+app.use(countMiddleware);
 
 app.get('/', (req, res) => {
     res.send(homeHtml);
